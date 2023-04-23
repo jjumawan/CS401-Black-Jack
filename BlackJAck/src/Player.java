@@ -93,25 +93,6 @@ public class Player {
         }
     }
 
-    // Double Down: Make a bet equal to the original bet, deal a card, and then
-    // stand. (double down could be optional if we don't have time to implement it)
-    public void doubleDown() {
-        // Check if the player has enough balance in their account to make bet
-        if (this.playerHands.get(0).getBet() * 2 > roundBalance) {
-            // If not, ask player to make a smaller bet
-            // TODO: Display these messages in the GUI
-            System.out.println("You do not have enough balance to double down.");
-        } else {
-            // Make bet (Always make bet on the latest hand (top of the stack)).
-            this.playerHands.get(this.numOfHands - 1).setBet(this.playerHands.get(0).getBet() * 2);
-            // Update balance
-            this.roundBalance -= this.playerHands.get(0).getBet();
-            // Add a card
-            this.playerHands.get(0).addCard();
-            // Update cards of the hand (equivalent to deal a card)
-        }
-    }
-
     public void hit() {
         // Add card to hand
         this.playerHands.get(0).updateCards();
@@ -139,26 +120,5 @@ public class Player {
         // Update player status to SURRENDERD
         this.playerStatus = PlayerStatus.SURRENDERD;
     }
-
-    public void displayHand() {
-
-    }
-
-    // // TODO: Implement this method
-    // // Create a new hand and add it to the playerHands ArrayList
-    // public void split() {
-    // // Check if the player has enough balance in their account to split the hand
-    // if (this.playerHands.get(0).getBet() * 2 > roundBalance) {
-    // // If not, ask player to make a smaller bet
-    // System.out.println("You do not have enough balance to split hand.");
-    // } else {
-    // // Create a new hand and add it to the playerHands ArrayList
-    // Hand newHand = new Hand();
-    // newHand.addCard(this.playerHands.get(0).getCard());
-    // // Add another card to both hands
-    // this.playerHands.get(0).addCard();
-
-    // }
-    // }
 
 }
