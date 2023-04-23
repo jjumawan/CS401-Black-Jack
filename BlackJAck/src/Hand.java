@@ -23,7 +23,9 @@ public class Hand {
 		cards = new Card[maxCards];
 		numCards = newNumCards;
 		
-		for (int i = 0; i < newNumCards; i++)
+		for (int i = 0; i < newNumCards; i++) {
+			cards[i] = newCard[i];
+		}
 		
 		
 		value = newVal;
