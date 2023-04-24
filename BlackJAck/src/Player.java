@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Player {
     private enum PlayerStatus {
         DECIDING,
@@ -7,13 +5,10 @@ public class Player {
         WAITING,
         FINISHEDROUND,
         BUSTED,
-        SURRENDERD
     }
 
     private String userID;
-    private Hand hand;
-    private ArrayList<Hand> playerHands;
-    private int numOfHands;
+    private Hand playerHand;
     private PlayerStatus playerStatus;
     // The player's current balance when they join the game (must be passed in as a
     // parameter by Account object, and the Account object must check and update the
@@ -21,10 +16,9 @@ public class Player {
     private int roundBalance;
 
     // Constructor
-    public Player(String userID) {
-        this.userID = userID;
-        this.playerHands = new ArrayList<Hand>();
-        this.numOfHands = playerHands.size();
+    public Player(final String userID) {
+        this.userID = userID; // userID: passed in from the Account class
+        this.playerHand = new Hand();
         // Initialize player status to DECIDING because player is making a decision
         // (make a bet)
         this.playerStatus = PlayerStatus.DECIDING;
@@ -35,12 +29,8 @@ public class Player {
         return this.userID;
     }
 
-    public ArrayList<Hand> getPlayerHands() {
-        return this.playerHands;
-    }
-
-    public int getNumOfHands() {
-        return numOfHands;
+    public Hand getPlayerHand() {
+        return this.playerHand;
     }
 
     public PlayerStatus getPlayerStatus() {
@@ -54,16 +44,8 @@ public class Player {
     }
 
     // Setters
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public void setPlayerHands(ArrayList<Hand> playerHands) {
-        this.playerHands = playerHands;
-    }
-
-    public void setNumOfHands(int numOfHands) {
-        this.numOfHands = numOfHands;
+    public void setPlayerHands(Hand playerHand) {
+        this.playerHand = playerHand;
     }
 
     public void updateStatus(PlayerStatus playerStatus) {
@@ -85,7 +67,7 @@ public class Player {
             System.out.println("Please make a smaller bet.");
         } else {
             // Make bet (Always make bet on the latest hand (top of the stack)).
-            this.playerHands.get(this.numOfHands - 1).setBet(betAmount);
+            this.playerHand.setBet(betAmount);
             // Update balance
             this.roundBalance -= betAmount;
             // Update player status to WAITING
@@ -93,32 +75,22 @@ public class Player {
         }
     }
 
-    public void hit() {
-        // Add card to hand
-        this.playerHands.get(0).updateCards();
+    // Get a new card from the table (table gets a new card from the deck)
+    public void hit(Card newCard) {
+
+        this.playerHand.addCardToHand(newCard);
 
         // Check if hand is busted
-        if (this.playerHands.get(0).getValue() > 21) {
+        if (this.playerHand.getValue() > 21) {
             this.playerStatus = PlayerStatus.BUSTED;
             // TODO: Display this message in the GUI
             System.out.println("You are busted.");
-        } else {
-            // If not busted, add a card to the hand.
-            this.playerHands.get(0).addCard();
-
-            // Update player status to WAITING
-            this.playerStatus = PlayerStatus.WAITING;
         }
     }
 
     public void stand() {
         // Update player status to STANDING
         this.playerStatus = PlayerStatus.STANDING;
-    }
-
-    public void surrender() {
-        // Update player status to SURRENDERD
-        this.playerStatus = PlayerStatus.SURRENDERD;
     }
 
 }
