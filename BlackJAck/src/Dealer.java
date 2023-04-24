@@ -2,45 +2,33 @@
 public class Dealer {
 	
 	private Hand dealerHand;
-	private int dealerHandNum;
-	private Card[] hiddenCards;
-	private int hiddenCardsNum;
 	private boolean stand;
 	
 	public Dealer() {
-		dealerHand = new Hand(0);
-		Card[] hiddenCards = new Card[10];
 		
-		dealerHandNum = 0;
-		hiddenCardsNum = 0;
-		
+		dealerHand = new Hand();
 		stand = false;
 	}
-
-//	public Hand geHand() {
-//		Hand tempHand = new Hand();
-//		
-//		System.arraycopy(hiddenCards, 0, tempCards, 0, hiddenCardNum);
-//		
-//		return tempHand;
-//		
-//	}
 	
-	public Card[] getHiddenCard() {
+	// return the hand of the dealer, contains the set of cards in hand,
+	// value and bet amount of the hand
+	public Hand getHand() {
 		
-		Card[] tempCards = new Card[hiddenCards.length];
-		
-		System.arraycopy(hiddenCards, 0, tempCards, 0, hiddenCardsNum);
-		
-		return tempCards;
+		return dealerHand;
+	}
+	
+	// add new card to dealer's hand
+	// Logic for dealer to hit is in table class
+	public void addNewCard(Card newCard) {
+		dealerHand.addCardToHand(newCard);
 		
 	}
 	
-//	public Card getCard() {
-//		
-//	}
-	
+	// dealer can hit until hand's value is greater than or equal to 17
+	// Logic for dealer to hit is in table class
 	public void endRound() {
-		stand = true;
+		
+		if (dealerHand.getValue() >= 17)
+			stand = true;
 	}
 }
