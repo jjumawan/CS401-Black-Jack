@@ -2,35 +2,22 @@
 public class Hand {
 	
 	// attributes
+	
+	// initialize cards to have 15 indexes, to cover for the unlikely number of cards
 	private final int maxCards = 15;
 	private Card[] cards;
 	private int numCards;
 	private int value;
 	private int bet;
 	
-	
-	public Hand(int bet) {
-		// initialize cards to have 15? indexes, to cover for the unlikely number of cards
+	// an empty hand is created with a player/dealer object
+	public Hand() {
 		cards = new Card[maxCards];
 		numCards = 0;
 		value = 0;
-		setBet(bet);
+		bet = 0;;
 	}
 	
-	public Hand(int newBet, Card[] newCard, int newNumCards, int newVal) {
-		// initialize cards to have 15? indexes, to cover for the unlikely number of cards
-		
-		cards = new Card[maxCards];
-		numCards = newNumCards;
-		
-		for (int i = 0; i < newNumCards; i++) {
-			cards[i] = newCard[i];
-		}
-		
-		
-		value = newVal;
-		setBet(newBet);
-	}
 
 	// TODO: consider this the split hand helper, since it would be easier to
 	// modify this hand/cards instead of writing a public updateCards method
@@ -46,61 +33,66 @@ public class Hand {
 //	}
 	
 
-	// return all the cards' value in the hand
+	// return all the cards' value (rank and suit) in the hand
 	public Card[] getCards() {
 		
-		Card[] tempCards = new Card[cards.length];
-		
-		System.arraycopy(cards, 0, tempCards, 0, numCards);
-		
-		return tempCards;
-		
+		return cards;
 	}
 	
+	// return the total value of the hand
 	public int getValue() {
 		
-		int handValue = 0;
+		value = 0;
+		
+		// re-calculate value of the hand
 		
 		for (int i = 0; i < numCards; i++) {
 			
 			// handles face cards, value 10
 			if (cards[i].getRank() > 9)
-				handValue += 10;
+				value += 10;
 			
 			// general cases, values 2-9
-			if (cards[i].getRank() > 1 && cards[i].getRank() < 10 )
-				handValue += cards[i].getRank();
+			else if (cards[i].getRank() > 1 && cards[i].getRank() < 10 )
+				value += cards[i].getRank();
 			
 			// handles ace, value 1 or 11
-			if (handValue + 11 > 21) {
-				handValue += 1;
-			}
 			else {
-				handValue += 11;
+				if (value + 11 > 21) {
+					value += 1;
+				}
+				else {
+					value += 11;
+				}
 			}
 			
 		}
 		
-		return handValue;
-		
+		return value;
 	}
 	
+	// update the bet of the hand
 	public void setBet(int bet) {
+		
 		this.bet = bet;
 	}
 	
+	// return the bet amount for the hand
 	public int getBet() {
+		
 		return bet;
 	}
 	
+	// get the number of cards in the hand
 	public int getNumCards() {
+		
 		return numCards;
 	}
 	
+	// to add a new card to the hand of player/dealer
 	public void addCardToHand(Card newCard) {
 		
 		cards[numCards++] = newCard;
-
 	}
 	
 }
