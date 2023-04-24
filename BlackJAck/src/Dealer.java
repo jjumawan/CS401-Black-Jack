@@ -2,12 +2,12 @@
 public class Dealer {
 	
 	private Hand dealerHand;
-	private boolean stand;
+	private boolean isStand;
 	
 	public Dealer() {
 		
 		dealerHand = new Hand();
-		stand = false;
+		isStand = false;
 	}
 	
 	// return the hand of the dealer, contains the set of cards in hand,
@@ -29,6 +29,12 @@ public class Dealer {
 	public void endRound() {
 		
 		if (dealerHand.getValue() >= 17)
-			stand = true;
+			isStand = true;
 	}
+	
+	// returns if the dealer is standing
+	public boolean getIsStand() {
+		return isStand;
+	}
+	
 }
