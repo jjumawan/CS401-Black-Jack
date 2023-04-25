@@ -1,12 +1,4 @@
 public class Player {
-    private enum PlayerStatus {
-        DECIDING,
-        STANDING,
-        WAITING,
-        FINISHEDROUND,
-        BUSTED,
-    }
-
     private String userID;
     private Hand playerHand;
     private PlayerStatus playerStatus;
@@ -19,9 +11,9 @@ public class Player {
     public Player(final String userID) {
         this.userID = userID; // userID: passed in from the Account class
         this.playerHand = new Hand();
-        // Initialize player status to DECIDING because player is making a decision
+        // Initialize player status to WAITING because player is making a decision
         // (make a bet)
-        this.playerStatus = PlayerStatus.DECIDING;
+        this.playerStatus = PlayerStatus.WAITING;
     }
 
     // Getters
@@ -55,6 +47,10 @@ public class Player {
     // roundBalance should be passed in as a parameter by Account class
     public void setBalance(int currentAccountBalance) {
         this.roundBalance = currentAccountBalance;
+    }
+
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
     }
 
     // Methods

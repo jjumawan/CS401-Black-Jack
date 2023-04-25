@@ -1,18 +1,30 @@
-
 public class Driver {
 	public static void main(String[] args) {
+		Card temp = new Card();
 		Deck x = new Deck();
-		System.out.println("should work");
-		
-		for(int i = 0; i < 52; i++) {
-		System.out.println(x.drawACard().toString());
-		}
-		
-		System.out.println(x.getCardsLeft());
-		System.out.println("mixed");
+		Hand myHand = new Hand();
+
+		myHand.addCardToHand(x.drawACard());
+
+		System.out.println(temp.toString());
+
 		x.shuffle();
-		for(int i = 0; i < 52; i++) {
-			System.out.println(x.drawACard().toString());
-			}
+
+		System.out.println(temp.toString());
+
+		System.out.println(myHand.getValue());
+		System.out.println("Testing the table ---------------");
+		Table xy = new Table();
+
+		xy.getTimer();
+
+		System.out.println("End of testing" + " \n _______\n"
+				+ "|A      |\n"
+				+ "|       |\n"
+				+ "|   ♠   |\n"
+				+ "|       |\n"
+				+ "|_______|\n"
+				+ "");
+
 	}
 }
