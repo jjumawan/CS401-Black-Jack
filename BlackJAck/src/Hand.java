@@ -1,4 +1,3 @@
-
 public class Hand {
 	
 	// attributes
@@ -36,7 +35,7 @@ public class Hand {
 	// return all the cards' value (rank and suit) in the hand
 	public Card[] getCards() {
 		
-		return cards;
+		return this.cards;
 	}
 	
 	// return the total value of the hand
