@@ -1,64 +1,97 @@
-
 public class Hand {
-	private Card[] handOfCards = new Card[10];
-	private int numOfCards;
-	private int vaule;
+	
+	// attributes
+	
+	// initialize cards to have 15 indexes, to cover for the unlikely number of cards
+	private final int maxCards = 15;
+	private Card[] cards;
+	private int numCards;
+	private int value;
 	private int bet;
 	
+	// an empty hand is created with a player/dealer object
 	public Hand() {
-		this.numOfCards = 0;
-		this.vaule = 0;
-		this.bet = 0;
+		cards = new Card[maxCards];
+		numCards = 0;
+		value = 0;
+		bet = 0;;
 	}
 	
-	//public Hand SplitHand();
+
+	// TODO: consider this the split hand helper, since it would be easier to
+	// modify this hand/cards instead of writing a public updateCards method
 	
-	public Card DrawCard(Card x) {
-		handOfCards[numOfCards] = new Card();
-		handOfCards[numOfCards] = x;
-		numOfCards++;
+	// recommend moving splitHand() to player class
+	// player class can call for another instance of hand with same bet and one card value
+	// and modify the original hand's cards.
+//	public Hand SplitHand(Card[] oldCards, int oldBet) {
+//		// check if there are two cards of the same value
+//		
+//		// if yes
+//		Hand secondHand = new Hand();
+//	}
+	
+
+	// return all the cards' value (rank and suit) in the hand
+	public Card[] getCards() {
 		
-		return handOfCards[numOfCards - 1];
+		return this.cards;
 	}
 	
+	// return the total value of the hand
 	public int getValue() {
-		this.setValue();
-		return this.vaule;
-	}
-	
-	public void setValue() {
-		int ace = 0;
-		for(int i = 0; i < numOfCards; i++)
-		{
-			if(handOfCards[i].getRank() == ace) {    //Logic is still broken 
-				
-				this.vaule = 11 + this.vaule;
-				if(this.vaule < 21) {
-					handOfCards[i].setRank(11);
+		
+		value = 0;
+		
+		// re-calculate value of the hand
+		
+		for (int i = 0; i < numCards; i++) {
+			
+			// handles face cards, value 10
+			if (cards[i].getRank() > 9)
+				value += 10;
+			
+			// general cases, values 2-9
+			else if (cards[i].getRank() > 1 && cards[i].getRank() < 10 )
+				value += cards[i].getRank();
+			
+			// handles ace, value 1 or 11
+			else {
+				if (value + 11 > 21) {
+					value += 1;
 				}
 				else {
-					handOfCards[i].setRank(1);
-					}
-				
-			}else
-				this.vaule = handOfCards[i].getRank() + this.vaule; 
+					value += 11;
+				}
+			}
+			
 		}
+		
+		return value;
 	}
 	
-	public void setBet (int newBet) {
-		this.bet = newBet;
+	// update the bet of the hand
+	public void setBet(int bet) {
+		
+		this.bet = bet;
 	}
 	
-	public int getBet(){
-		return this.bet;
+	// return the bet amount for the hand
+	public int getBet() {
+		
+		return bet;
 	}
+	
+	// get the number of cards in the hand
 	public int getNumCards() {
-		return this.numOfCards;
+		
+		return numCards;
 	}
 	
-	public void printHand() {
-		for(int i = 0; i< numOfCards; i++) {
-			System.out.println(handOfCards[i].toString());
-		}
+	// to add a new card to the hand of player/dealer
+	public void addCardToHand(Card newCard) {
+		
+		cards[numCards++] = newCard;
 	}
+	
 }
