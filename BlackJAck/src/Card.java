@@ -48,6 +48,10 @@ public class Card {
 		return this;
 	}
 	
+	public int getRank(){
+		return this.rank;
+	}
+	
 	public int getWorth() {
 		return this.worth;
 	} 
