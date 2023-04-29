@@ -45,11 +45,42 @@ public class ClientGUI implements ClientUI {
     private void doCreateAccount() {}
     
     public void accountCommands() {
-        
+		 String[] commands = {"Start Game",
+				 	"Exit Game",
+				 	"Edit Balance"};
+		 
+		 int choice;
+		 
+		 do {
+			 choice = JOptionPane.showOptionDialog(null,
+					 tempA.getUserID() + "\nSelect a command", 
+					 "Home Page", 
+					 JOptionPane.YES_NO_CANCEL_OPTION, 
+					 JOptionPane.QUESTION_MESSAGE, 
+					 null, 
+					 commands,
+					 commands[commands.length - 1]);
+		 
+			 switch (choice) {
+			 	case 0: inGame(); break;
+			 	case 1: tempA.logOut(); break;
+			 	case 2: editFunds(); break;
+			 	default:  // do nothing
+			 }
+			 
+		 } while (choice != commands.length-1);
     }
 
     public void inGame() {
       
+    }
+    
+    
+    private void editFunds() {
+    	
+    	
+    	
+    	
     }
 
     
