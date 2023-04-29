@@ -39,6 +39,10 @@ public class Account {
         return this.userIDPassword.getUsername();
     }
     
+    public int getBalance() {
+    	return this.balance;
+    }
+    
     public void addBalance(int amount) {
         this.balance += amount;
         System.out.println(amount + " added to balance. New balance: " + this.balance);
