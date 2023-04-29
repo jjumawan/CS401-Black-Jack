@@ -2,7 +2,7 @@ public class House {
     
     private int balance;
     
-    private House() {
+    public House() {
         balance = 1000000;
     }
     
