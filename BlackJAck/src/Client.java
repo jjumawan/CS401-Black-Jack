@@ -25,6 +25,8 @@ public class Client {
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
+            clientGUI.accountCommands();
+
             // Get the username and password from GUI
             UserAuthentication userAuthentication = clientGUI.loginCommands();
 

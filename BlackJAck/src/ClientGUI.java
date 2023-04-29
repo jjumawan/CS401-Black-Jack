@@ -1,18 +1,16 @@
 import javax.swing.*;
 
 public class ClientGUI implements ClientUI {
-    private Account tempA = new Account();
-    private Player tempP = new Player(tempA.getUserID());
+    private Account currAccount = new Account();
+    private Player currPlayer = new Player(currAccount.getUserID());
 
-    public ClientGUI(Account curr) {
-        tempA = curr;
+    public ClientGUI(Account account) {
+        currAccount = account;
     }
 
     public UserAuthentication loginCommands() {
         String[] options = { "Log in", "Create Account", "Exit" };
-
         int choice;
-
         do {
             choice = JOptionPane.showOptionDialog(null,
                     "Pick an option", "Portal page",
@@ -40,20 +38,6 @@ public class ClientGUI implements ClientUI {
         UserAuthentication userAuthentication = new UserAuthentication(username, password,
                 UserAuthenticationType.LOGIN);
         return userAuthentication;
-        // if (tempA.getUserMap().containsKey(username)) {
-        // if (user.authenticate(username, password)) {
-        // JOptionPane.showMessageDialog(null, "Login successful!");
-        // accountCommands();
-        // } else {
-        // JOptionPane.showMessageDialog(null, "Incorrect username or password. Please
-        // try again.");
-        // doLogin();
-        // }
-        // } else {
-        // JOptionPane.showMessageDialog(null, "Username not found. Please create an
-        // account.");
-        // doCreateAccount();
-        // }
     }
 
     public UserAuthentication doCreateAccount() {
@@ -62,22 +46,82 @@ public class ClientGUI implements ClientUI {
         UserAuthentication userAuthentication = new UserAuthentication(username, password,
                 UserAuthenticationType.SINGUP);
         return userAuthentication;
-        // if (tempA.getUserMap().containsKey(username)) {
-        // JOptionPane.showMessageDialog(null, "Username already exists. Please choose a
-        // different one.");
-        // doCreateAccount();
-        // } else {
-        // tempA.getUserMap().put(username, password);
-        // JOptionPane.showMessageDialog(null, "Account created successfully!");
-        // accountCommands();
-        // }
     }
 
     public void accountCommands() {
-        // TODO: Implement accountCommands method
+        String[] commands = { "Start Game",
+                "Log Out",
+                "Edit Balance" };
+
+        int choice;
+
+        do {
+            choice = JOptionPane.showOptionDialog(null,
+                    currAccount.getUserID() + "\nSelect a command",
+                    "Home Page",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    commands,
+                    commands[commands.length - 1]);
+
+            switch (choice) {
+                case 0:
+                    // inGame();
+                    break;
+                case 1:
+                    currAccount.logOut();
+                    currAccount.setUser(loginCommands());
+                    break;
+                case 2:
+                    editFunds();
+                    break;
+                default: // do nothing
+            }
+
+        } while (choice != commands.length - 1);
     }
 
-    public void inGame() {
-        // TODO: Implement inGame method
+    // public Player inGame() {
+
+    // }
+
+    private void editFunds() {
+        int amount;
+
+        String[] commands = { "Add",
+                "Withdraw" };
+
+        int choice;
+
+        do {
+            choice = JOptionPane.showOptionDialog(null,
+                    currAccount.getUserID() + "\nSelect a command",
+                    "Update Balance",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    commands,
+                    commands[commands.length - 1]);
+
+            switch (choice) {
+                case 0:
+                    amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
+                    currAccount.addBalance(amount);
+                    break;
+                case 1:
+                    amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
+                    currAccount.withdrawBalance(amount);
+                    break;
+                default: // do nothing
+            }
+
+        } while (choice != commands.length - 1);
     }
+
+    public Player inGame() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'inGame'");
+    }
+
 }

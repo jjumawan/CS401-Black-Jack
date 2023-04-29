@@ -2,7 +2,7 @@ public interface ClientUI {
 
     public UserAuthentication loginCommands();
 
-    public Account accountCommands();
+    public void accountCommands();
 
     public Player inGame();
 
