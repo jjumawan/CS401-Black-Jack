@@ -3,74 +3,38 @@ import java.net.*;
 import java.util.*;
 
 // Client class
-class Client {
-	
-	// driver code
-	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException
-	{
-        ClientUI Ainterface;
-        Account  line = new Account();      
-        Player    x = new Player(line.getUserID());  
-		// establish a connection by providing host and port
-		// number
-		try (Socket socket = new Socket("localhost", 8000)) {
-			
-           
-	        
-			// Output stream socket & Create object output stream from the output stream to send an object through it
-	        OutputStream outputStream = socket.getOutputStream();
-	        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+public class Client {
 
-			// reading from server
-			InputStream inputStream = socket.getInputStream();
-		    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+    // driver code
+    public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
+        // Initiate the UI
+        Account account = new Account();
+        ClientGUI clientGUI = new ClientGUI(account);
+        Player player = new Player(account.getUserID());
 
-			// object of scanner class
-		    System.out.println("give me a line:");
-			Scanner sc = new Scanner(System.in);
-			
-            
-             //open the gui for log in
-             //get info with 
-             sc.nextLine();
+        // Establish the connection with server
+        try (Socket socket = new Socket("localhost", 8000)) {
 
-             //log in button -> to send clint  rgw dummy account *can use the status as a flag of what they can and cant do 
-             objectOutputStream.writeUnshared(line);
-		       objectOutputStream.flush();
+            System.out.println("Connected to server");
 
-            //read back the account
-            line = (Account) objectInputStream.readObject();
+            // Writing to server
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-            //check the a satus 
-            //if online, go pt.2 enter a new loop 
-            
+            // Reading from server
+            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-             /* 
-			while (line.getType() != "LOGOUT") {
-				
-				// reading from user
-				line.setText(sc.nextLine());
+            clientGUI.accountCommands();
 
-				// sending the user input to server
-		       objectOutputStream.writeUnshared(line);
-		       objectOutputStream.flush();
+            // Get the username and password from GUI
+            UserAuthentication userAuthentication = clientGUI.loginCommands();
 
-				// displaying server reply
-		       
-		       line = (Message) objectInputStream.readObject();
-		       if(line.getStatus() != Status.Pendeing) {
-				System.out.println("Server replied: " + line.toString());
-		       }else if(line.getStatus().equals(Status.Success)){
-		    	   System.out.println("\nEnter text you'd like to be caped:");
-		    	   break;
-		       }else
-		    	   System.out.println("\nEnter text");
-				
-				*/
-			
-			// closing the scanner object
-			sc.close();
-		}
-	
-	}
+            System.out.println(userAuthentication.getUsername());
+
+            objectOutputStream.writeUnshared(userAuthentication);
+            objectOutputStream.flush();
+
+        }
+    }
 }

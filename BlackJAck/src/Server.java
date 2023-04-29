@@ -3,10 +3,8 @@ import java.net.*;
 
 // Server class
 class Server {
-	
-	
-	public static void main(String[] args)
-	{
+
+	public static void main(String[] args) {
 		ServerSocket server = null;
 
 		try {
@@ -28,8 +26,8 @@ class Server {
 				// Displaying that new client is connected
 				// to server
 				System.out.println("New client connected: "
-								+ client.getInetAddress()
-										.getHostAddress());
+						+ client.getInetAddress()
+								.getHostAddress());
 
 				// create a new thread object
 				ClientHandler clientSock = new ClientHandler(client);
@@ -39,16 +37,13 @@ class Server {
 				new Thread(clientSock).start();
 				System.out.println("Something happens here");
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if (server != null) {
 				try {
 					server.close();
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -61,52 +56,47 @@ class Server {
 		private boolean loged = false;
 
 		// Constructor
-		public ClientHandler(Socket socket)
-		{
+		public ClientHandler(Socket socket) {
 			this.clientSocket = socket;
 		}
 
-		public void run()
-		{
-			
+		public void run() {
+
 			try {
-					
+
 				System.out.println("get output");
-				// Output stream socket & Create object output stream from the output stream to send an object through it
-		        OutputStream outputStream = clientSocket.getOutputStream();
-		        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-				
-				
-				// get the input stream from the connected socket & create a ObjectInputStream so we can read data from it.
-		        InputStream inputStream = clientSocket.getInputStream();
-		        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-		        		
+				// Output stream socket & Create object output stream from the output stream to
+				// send an object through it
+				OutputStream outputStream = clientSocket.getOutputStream();
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+				// get the input stream from the connected socket & create a ObjectInputStream
+				// so we can read data from it.
+				InputStream inputStream = clientSocket.getInputStream();
+				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
 				System.out.println("get intput");
-				
-		
+
 				Account buf = null;
-				
-				//read in the account class
-				//while ((buf = (Account) objectInputStream.readObject()) != null) 
-				
-				//check the log in
-				//buf.login(buf.getUser());
-				//if worked pass a log in /set logged to true 
-				//if nnot break (repeat the loop)
 
-				//home page actions play, edit funds, exit 
-				//play needs network 
-				//edit can be done localy on the clint 
-				//exit can send a good by and kill tread 
+				// read in the account class
+				// while ((buf = (Account) objectInputStream.readObject()) != null)
 
+				// check the log in
+				// buf.login(buf.getUser());
+				// if worked pass a log in /set logged to true
+				// if nnot break (repeat the loop)
 
-				
+				// home page actions play, edit funds, exit
+				// play needs network
+				// edit can be done localy on the clint
+				// exit can send a good by and kill tread
+
 			}
-			
+
 			catch (IOException e) {
 				e.printStackTrace();
-			}
-			finally {
+			} finally {
 			}
 		}
 	}

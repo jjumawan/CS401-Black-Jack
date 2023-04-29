@@ -1,7 +1,9 @@
 public interface ClientUI {
 
-    void loginCommands();
-    void accountCommands();
-    void inGame();
-    
+    public UserAuthentication loginCommands();
+
+    public void accountCommands();
+
+    public Player inGame();
+
 }
