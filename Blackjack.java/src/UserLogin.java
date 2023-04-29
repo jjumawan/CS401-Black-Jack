@@ -12,7 +12,7 @@ public class UserLogin {
         return enteredUsername.equals(this.username) && enteredPassword.equals(this.password);
     }
     
-    // getters and setters for username and password
+    // getters and setters
     public String getUsername() {
         return this.username;
     }
