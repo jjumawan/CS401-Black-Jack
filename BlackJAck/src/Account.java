@@ -5,17 +5,19 @@ public class Account {
     private AccountStatus accountStatus;
     
     public Account() {
-        this.userIDPassword = null;
+        this.userIDPassword = new UserLogin("","");
         this.balance = 0;
         this.accountStatus = AccountStatus.OFFLINE;
     }
     
-    public void login(UserLogin user) {
+    public boolean login(UserLogin user) {
         if (user.getUsername().equals(this.userIDPassword.getUsername()) && user.getPassword().equals(this.userIDPassword.getPassword())) {
             this.accountStatus = AccountStatus.ONLINE;
             System.out.println("Login successful.");
+            return true;
         } else {
             System.out.println("Invalid username or password.");
+            return false;
         }
     }
     
@@ -30,6 +32,9 @@ public class Account {
         System.out.println("Logged out.");
     }
     
+    public UserLogin getUser(){
+        return this.userIDPassword;
+    }
     public String getUserID() {
         return this.userIDPassword.getUsername();
     }
