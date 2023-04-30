@@ -48,7 +48,7 @@ public class ClientGUI implements ClientUI {
         return userAuthentication;
     }
 
-    public void accountCommands() {
+    public Account accountCommands() {
         String[] commands = { "Start Game",
                 "Log Out",
                 "Edit Balance" };
@@ -80,6 +80,8 @@ public class ClientGUI implements ClientUI {
             }
 
         } while (choice != commands.length - 1);
+        
+        return currAccount;
     }
 
     // public Player inGame() {
@@ -92,31 +94,28 @@ public class ClientGUI implements ClientUI {
         String[] commands = { "Add",
                 "Withdraw" };
 
-        int choice;
+        int choice = JOptionPane.showOptionDialog(null,
+                currAccount.getUserID() + "\nSelect a command",
+                "Update Balance",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                commands,
+                commands[commands.length - 1]);
 
-        do {
-            choice = JOptionPane.showOptionDialog(null,
-                    currAccount.getUserID() + "\nSelect a command",
-                    "Update Balance",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    commands,
-                    commands[commands.length - 1]);
+        switch (choice) {
+            case 0:
+                amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
+                currAccount.addBalance(amount);
+                break;
+            case 1:
+                amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
+                currAccount.withdrawBalance(amount);
+                break;
+            default: // do nothing
+        }
 
-            switch (choice) {
-                case 0:
-                    amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
-                    currAccount.addBalance(amount);
-                    break;
-                case 1:
-                    amount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount"));
-                    currAccount.withdrawBalance(amount);
-                    break;
-                default: // do nothing
-            }
 
-        } while (choice != commands.length - 1);
     }
 
     public Player inGame() {
