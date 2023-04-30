@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class ClientGUI implements ClientUI {
     private Account currAccount = new Account();
@@ -119,8 +120,52 @@ public class ClientGUI implements ClientUI {
     }
 
     public Player inGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'inGame'");
+        // create two arrays
+        String[] dealer = { "12 Of spades", "Ace of hearts"};
+        String[] array2 = {"Red", "Green", "Blue", "Yellow", "Purple", "Orange"};
+
+        // create two JList components to display the arrays
+        JList<String> list1 = new JList<>(dealer);
+        JList<String> list2 = new JList<>(array2);
+
+        // create two JLabel components to hold the names of the arrays
+        JLabel label1 = new JLabel("Dealer:");
+        JLabel label2 = new JLabel("Your name:");
+
+        // create a JPanel to hold the JList components and labels
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        panel.add(label1, c);
+        c.gridx = 1;
+        c.gridy = 0;
+        panel.add(new JScrollPane(list1), c);
+        c.gridx = 0;
+        c.gridy = 1;
+        panel.add(label2, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(new JScrollPane(list2), c);
+
+        // add three buttons to the dialog
+        Object[] options = {"Hit", "Stand", "Quit"};
+
+        // display the panel and buttons in a JOptionPane message dialog
+        int choice = JOptionPane.showOptionDialog(null, panel, "Black Jack",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+        // handle the user's choice
+        if (choice == 0) {
+            System.out.println("User chose Hit");
+        } else if (choice == 1) {
+            System.out.println("User chose Stand");
+        } else if (choice == 2) {
+            System.out.println("User chose Quit");
+        }
+
+        return currPlayer;
     }
 
 }

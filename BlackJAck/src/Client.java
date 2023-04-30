@@ -25,10 +25,14 @@ public class Client {
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-            clientGUI.accountCommands();
+
 
             // Get the username and password from GUI
             UserAuthentication userAuthentication = clientGUI.loginCommands();
+
+            clientGUI.accountCommands();
+
+            clientGUI.inGame();
 
             System.out.println(userAuthentication.getUsername());
 
@@ -36,24 +40,5 @@ public class Client {
             objectOutputStream.flush();
 
         }
-    }
-
-    public void Albert() {
-        System.out.println("");
-    }
-
-    public void Parsa9PM(){
-        system.out.println("wattup boyz");
-    }
-
-    public void flora() {
-    }
-
-    public void jjumawan() {
-        return ""
-    }
-
-    public String getName() {
-        return "Thomas";
     }
 }
