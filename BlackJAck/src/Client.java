@@ -37,4 +37,23 @@ public class Client {
 
         }
     }
+
+    public void Albert() {
+        System.out.println("");
+    }
+
+    public void Parsa9PM(){
+        system.out.println("wattup boyz");
+    }
+
+    public void flora() {
+    }
+
+    public void jjumawan() {
+        return ""
+    }
+
+    public String getName() {
+        return "Thomas";
+    }
 }
