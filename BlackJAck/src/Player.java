@@ -1,4 +1,6 @@
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private String userID;
     private Hand playerHand;
     private PlayerStatus playerStatus;

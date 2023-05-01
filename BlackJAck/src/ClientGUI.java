@@ -37,7 +37,7 @@ public class ClientGUI implements ClientUI {
         String username = JOptionPane.showInputDialog(null, "Enter your username:");
         String password = JOptionPane.showInputDialog(null, "Enter your password:");
         UserAuthentication userAuthentication = new UserAuthentication(username, password,
-                UserAuthenticationType.LOGIN);
+                UserAuthenticationType.LOGIN_REQUEST);
         return userAuthentication;
     }
 
@@ -45,46 +45,45 @@ public class ClientGUI implements ClientUI {
         String username = JOptionPane.showInputDialog(null, "Enter a username:");
         String password = JOptionPane.showInputDialog(null, "Enter a password:");
         UserAuthentication userAuthentication = new UserAuthentication(username, password,
-                UserAuthenticationType.SINGUP);
+                UserAuthenticationType.SIGNUP);
         return userAuthentication;
     }
 
-    public Account accountCommands() {
+    public Account accountCommands(Account account) {
+        currAccount = account;
         String[] commands = { "Start Game",
                 "Log Out",
                 "Edit Balance" };
 
-        int choice;
+        // display the balance on the home page
+        System.out.println("print the box");
+        int choice = JOptionPane.showOptionDialog(null,
+                "ID: " + currAccount.getUserID() + " \n Balance: " + currAccount.getBalance() + "\nSelect a command",
+                "Home Page",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                commands,
+                commands[commands.length - 1]);
 
-        do {
-            choice = JOptionPane.showOptionDialog(null,
-                    currAccount.getUserID() + "\nSelect a command",
-                    "Home Page",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    commands,
-                    commands[commands.length - 1]);
-
-            switch (choice) {
-                case 0:
-                    // inGame();
-                    break;
-                case 1:
-                    currAccount.logOut();
-                    currAccount.setUser(loginCommands());
-                    break;
-                case 2:
-                    editFunds();
-                    break;
-                default: // do nothing
-            }
-
-        } while (choice != commands.length - 1);
-        
+        switch (choice) {
+            case 0:
+                currAccount.updateAccountAction(AccountAction.PLAY_GAME);
+                System.out.println("Play game");
+                return currAccount;
+            case 1:
+                currAccount.logOut();
+                System.out.println(" logged");
+                return currAccount;
+            case 2:
+                editFunds();
+                System.out.println("edited funds");
+                currAccount.updateAccountAction(AccountAction.UPDATE_BALANCE);
+                return currAccount;
+            default: // do nothing
+        }
         return currAccount;
     }
-
     // public Player inGame() {
 
     // }
@@ -116,21 +115,23 @@ public class ClientGUI implements ClientUI {
             default: // do nothing
         }
 
-
     }
 
-    public Player inGame() {
+    public Player inGame(Player player, Dealer dealer) {
         // create two arrays
-        String[] dealer = { "12 Of spades", "Ace of hearts"};
-        String[] array2 = {"Red", "Green", "Blue", "Yellow", "Purple", "Orange"};
+        Hand playerHand = new Hand();
+        Hand dealerHand = new Hand();
+
+        playerHand = player.getPlayerHand();
+        dealerHand = dealer.getHand();
 
         // create two JList components to display the arrays
-        JList<String> list1 = new JList<>(dealer);
-        JList<String> list2 = new JList<>(array2);
+        JList<Card> list1 = new JList<>(playerHand.getCards());
+        JList<Card> list2 = new JList<>(dealerHand.getCards());
 
         // create two JLabel components to hold the names of the arrays
         JLabel label1 = new JLabel("Dealer:");
-        JLabel label2 = new JLabel("Your name:");
+        JLabel label2 = new JLabel(player.getUserID());
 
         // create a JPanel to hold the JList components and labels
         JPanel panel = new JPanel(new GridBagLayout());
@@ -150,7 +151,7 @@ public class ClientGUI implements ClientUI {
         panel.add(new JScrollPane(list2), c);
 
         // add three buttons to the dialog
-        Object[] options = {"Hit", "Stand", "Quit"};
+        Object[] options = { "Hit", "Stand", "Quit" };
 
         // display the panel and buttons in a JOptionPane message dialog
         int choice = JOptionPane.showOptionDialog(null, panel, "Black Jack",

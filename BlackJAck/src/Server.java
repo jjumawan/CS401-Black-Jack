@@ -12,7 +12,22 @@ class Server {
 			// server is listening on port 1234
 			server = new ServerSocket(8000);
 			server.setReuseAddress(true);
-			House Vult = new House();
+			House house = new House();
+			Account[] accountList = new Account[100];
+			// MADE A READER
+			try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
+				String line;
+				while ((line = br.readLine()) != null) {
+					String username = line;
+					String password = br.readLine();
+					// Do something with the username and password, e.g. print them out
+					System.out.println("Username: " + username);
+					System.out.println("Password: " + password);
+				}
+			} catch (IOException e) {
+				System.out.println("input output error");
+			}
+
 			System.out.println("Listening........");
 
 			// running infinite loop for getting
@@ -53,7 +68,7 @@ class Server {
 	// ClientHandler class
 	private static class ClientHandler implements Runnable {
 		private final Socket clientSocket;
-		private boolean loged = false;
+		private boolean logged = false;
 
 		// Constructor
 		public ClientHandler(Socket socket) {
@@ -77,15 +92,62 @@ class Server {
 
 				System.out.println("get intput");
 
-				Account buf = null;
+				Account account = new Account(); // change
+				Player player = null;
+				Dealer dealer = null;
+				UserAuthentication userAuthentication = null;
+
+				System.out.println("Server: Entering the loop");
 
 				// read in the account class
-				// while ((buf = (Account) objectInputStream.readObject()) != null)
+				while ((userAuthentication = (UserAuthentication) objectInputStream.readObject()) != null) {
+
+					System.out.println(userAuthentication.getUsername());
+					if (userAuthentication.getType() == UserAuthenticationType.LOGIN_REQUEST) {
+						// TODO: Loop through the account list and check if the username and password
+						// already exist
+						// loop the account array
+						if (userAuthentication.authenticate(userAuthentication)) {
+
+							// account = accountlist[i];
+							userAuthentication.setType(UserAuthenticationType.LOGGED_IN);
+							objectOutputStream.writeUnshared(userAuthentication);
+							objectOutputStream.flush();
+							// write to account based on accountList
+							objectOutputStream.writeUnshared(account);
+							objectOutputStream.flush();
+							logged = true;
+							break;
+						}
+
+					} else if (userAuthentication.getType() == UserAuthenticationType.SIGNUP) {
+						// check it to a list with a for loop
+						// if it's uA == um form list
+						try {
+							FileOutputStream fos = new FileOutputStream("Playerlist.txt", true);
+							String data = userAuthentication.getUsername() + "," + userAuthentication.getPassword()
+									+ "\n";
+							fos.write(data.getBytes());
+							fos.close();
+						} catch (IOException e) {
+							System.out.println("output to file error");
+						}
+						userAuthentication.setType(UserAuthenticationType.NAME_TAKEN);
+						objectOutputStream.writeUnshared(userAuthentication);
+					} else {
+						// returns it as undefine
+						objectOutputStream.writeUnshared(userAuthentication);
+					}
+
+				}
 
 				// check the log in
 				// buf.login(buf.getUser());
 				// if worked pass a log in /set logged to true
 				// if nnot break (repeat the loop)
+
+				account = (Account) objectInputStream.readObject();
+				// do stuff
 
 				// home page actions play, edit funds, exit
 				// play needs network
@@ -94,7 +156,7 @@ class Server {
 
 			}
 
-			catch (IOException e) {
+			catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			} finally {
 			}

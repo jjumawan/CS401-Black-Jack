@@ -1,9 +1,11 @@
 import javax.swing.JOptionPane;
+import java.io.Serializable;
 
-public class Account {
+public class Account implements Serializable {
     private UserAuthentication userIDPassword;
     private int balance;
     private AccountStatus accountStatus;
+    private AccountAction accountAction;
 
     public Account() {
         this.userIDPassword = new UserAuthentication("", "", UserAuthenticationType.UNDEFINED);
@@ -22,7 +24,6 @@ public class Account {
             return false;
         }
     }
-
 
     public void signUp(UserAuthentication user) {
         this.userIDPassword = user;
@@ -72,7 +73,20 @@ public class Account {
         return this.accountStatus;
     }
 
+    public void updateAccountAction(AccountAction newAccountAction) {
+        this.accountAction = newAccountAction;
+    }
+
+    public AccountAction getAccountAction() {
+        return accountAction;
+    }
+
     public void setUser(UserAuthentication loginCommands) {
         this.userIDPassword = loginCommands;
     }
+    /*
+     * public char[] getPassword() {
+     * return null;
+     * }
+     */
 }

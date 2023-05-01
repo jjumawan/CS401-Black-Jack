@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class UserAuthentication {
+public class UserAuthentication implements Serializable {
     private String username;
     private String password;
     private UserAuthenticationType type;
@@ -10,8 +11,8 @@ public class UserAuthentication {
         this.type = type;
     }
 
-    public boolean authenticate(String enteredUsername, String enteredPassword) {
-        return enteredUsername.equals(this.username) && enteredPassword.equals(this.password);
+    public boolean authenticate(UserAuthentication x) {
+        return x.getUsername().equals(this.username) && x.getPassword().equals(this.password);
     }
 
     // getters and setters for username and password
@@ -29,5 +30,13 @@ public class UserAuthentication {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setType(UserAuthenticationType type) {
+        this.type = type;
+    }
+
+    public UserAuthenticationType getType() {
+        return this.type;
     }
 }

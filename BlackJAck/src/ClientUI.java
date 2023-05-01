@@ -2,8 +2,8 @@ public interface ClientUI {
 
     public UserAuthentication loginCommands();
 
-    public Account accountCommands();
+    public Account accountCommands(Account account);
 
-    public Player inGame();
+    public Player inGame(Player player, Dealer dealer);
 
 }
