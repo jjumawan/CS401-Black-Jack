@@ -47,7 +47,7 @@ public class Player implements Serializable {
     }
 
     // roundBalance should be passed in as a parameter by Account class
-    public void setBalance(int currentAccountBalance) {
+    public void setRoundBalance(int currentAccountBalance) {
         this.roundBalance = currentAccountBalance;
     }
 

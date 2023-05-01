@@ -88,20 +88,25 @@ public class Client {
                     // If the user clicks the play button, break the loop and start the game
                     break;
                 } else if (account.getAccountAction() == AccountAction.LOG_OUT) {
-                    // If the user clicks the logout button, break the loop and logout
-                    account = clientGUI.accountCommands(account);
+                    // If the user clicks the logout button, break the loop and go back to the log
+                    // in page
+                    // account = clientGUI.accountCommands(account);
 
-                    // userAuthentication = clientGUI.loginCommands();
+                    userAuthentication = clientGUI.loginCommands();
                     break;
                 }
                 // // Otherwise, keep popping up the home page
                 // account = clientGUI.accountCommands(account);
-                // Send the account information to the server
-                objectOutputStream.writeUnshared(account);
-                // objectOutputStream.flush();
+                // // Otherwise, keep the server updated with the latest account information
+                // objectOutputStream.writeUnshared(account);
+                // // objectOutputStream.flush();
             }
 
             System.out.println("Listening to the user's actions on the home page...");
+
+            // Set player's round balance (the amount of money they have when they start the
+            // round)
+            player.setRoundBalance(account.getBalance());
 
             Table roundTable = new Table();
             roundTable.addPlayer(player);
@@ -110,10 +115,12 @@ public class Client {
             String bet = JOptionPane.showInputDialog(null, "Enter a bet:");
             // Check if the user has enough money to bet
             while (Integer.parseInt(bet) > account.getBalance()) {
-                // Display user's balance
                 bet = JOptionPane.showInputDialog(null, "You have $" + account.getBalance()
-                        + " in your account. You don't have enough money to bet! Enter a lower bet:");
-                break;
+                        + " in your account. \nYou don't have enough money to bet! \nEnter a lower bet:");
+                System.out.println("Client: Bet = " + bet);
+                if (Integer.parseInt(bet) <= account.getBalance()) {
+                    break;
+                }
             }
 
             roundTable.getPlayer(0).getPlayerHand().setBet(Integer.parseInt(bet));

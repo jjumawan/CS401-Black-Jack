@@ -8,7 +8,6 @@ public class Table {
 	private boolean endOfRound;
 	private int totPlayers;
 
-
 	public Table() {
 		playingDeck = new Deck();
 		playersAtTable = new Player[5];
@@ -20,7 +19,7 @@ public class Table {
 
 	}
 
-	public void reset(){
+	public void reset() {
 		playingDeck = new Deck();
 		playersAtTable = new Player[5];
 		tabeleAvailability = true;
@@ -29,16 +28,19 @@ public class Table {
 		endOfRound = false;
 		totPlayers = 0;
 	}
-	public Deck getDeck(){
+
+	public Deck getDeck() {
 		return this.playingDeck;
 	}
-	public void setEOR(boolean t){
+
+	public void setEOR(boolean t) {
 		this.endOfRound = t;
 	}
 
-	public boolean getEOR(){
+	public boolean getEOR() {
 		return this.endOfRound;
 	}
+
 	public boolean eorCheck() {
 		for (int i = 0; i < totPlayers; i++) {
 			if (playersAtTable[i].getPlayerStatus() != PlayerStatus.STANDING
@@ -52,18 +54,18 @@ public class Table {
 	public void addPlayer(Player newPlayer) {
 		totPlayers = playersAtTable.length;
 		playersAtTable[0] = newPlayer;
-/* 
-		if (tabeleAvailability == false) {
-			System.out.println("it's full");
-			// make a new table
-		} else {
-			System.out.println("This many spots are opne:" + (5 - totPlayers));
-			playersAtTable[totPlayers + 1] = newPlayer;
-			if (totPlayers == 5) {
-				tabeleAvailability = false;
-			}
-		}
-		*/
+		/*
+		 * if (tabeleAvailability == false) {
+		 * System.out.println("it's full");
+		 * // make a new table
+		 * } else {
+		 * System.out.println("This many spots are opne:" + (5 - totPlayers));
+		 * playersAtTable[totPlayers + 1] = newPlayer;
+		 * if (totPlayers == 5) {
+		 * tabeleAvailability = false;
+		 * }
+		 * }
+		 */
 	}
 
 	// Check if there is a player needs to be removed after each round.
@@ -121,23 +123,21 @@ public class Table {
 
 		System.out.println("round has started");
 		// while loop that checks if all players are "fishished round"
-		//while (endOfRound == false) {
-			//for (int i = 0; i < totPlayers; i++) {
-				playersAtTable[0].hit(playingDeck.drawACard());
-				playersAtTable[0].hit(playingDeck.drawACard());
-			
+		// while (endOfRound == false) {
+		// for (int i = 0; i < totPlayers; i++) {
+		playersAtTable[0].hit(playingDeck.drawACard());
+		playersAtTable[0].hit(playingDeck.drawACard());
 
-			newDealer.addNewCard(playingDeck.drawACard());
+		newDealer.addNewCard(playingDeck.drawACard());
 
-			// loop each players acts
-			// call the traker bool if true, break
+		// loop each players acts
+		// call the traker bool if true, break
 
-			// updateMoney Accordingly with a loop
+		// updateMoney Accordingly with a loop
 
-			// call continueGame
+		// call continueGame
 
-		}
-	
+	}
 
 	// TODO: Need to implement continueGame().
 	public void continueGame() {

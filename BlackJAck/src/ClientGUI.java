@@ -10,11 +10,12 @@ public class ClientGUI implements ClientUI {
     }
 
     public UserAuthentication loginCommands() {
+        // show a welcome text on the login page
         String[] options = { "Log in", "Create Account", "Exit" };
         int choice;
         do {
             choice = JOptionPane.showOptionDialog(null,
-                    "Pick an option", "Portal page",
+                    "Welcome to Group 2's BlackJack! \n Pick an option", "Portal page",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -174,6 +175,8 @@ public class ClientGUI implements ClientUI {
             }
             if (x.getPlayer(0).getPlayerHand().getValue() > 21) {
                 x.getPlayer(0).setPlayerStatus(PlayerStatus.BUSTED);
+                // update player's balance
+                
                 x.setEOR(true);
                 JOptionPane.showMessageDialog(null,
                         "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction",
@@ -194,8 +197,10 @@ public class ClientGUI implements ClientUI {
 
             if (x.getDealer().getHand().getValue() > x.getPlayer(0).getPlayerHand().getValue()) {
                 JOptionPane.showMessageDialog(null,
-                        "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction",
-                        choice);
+                        "Dealer 
+
+                        
+
                 x.setEOR(DoContinue());
                 return x;
             } else if (x.getDealer().getHand().getValue() < x.getPlayer(0).getPlayerHand().getValue()) {
