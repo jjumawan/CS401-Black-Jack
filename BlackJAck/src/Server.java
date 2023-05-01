@@ -3,7 +3,7 @@ import java.net.*;
 
 // Server class
 class Server {
-
+	
 	public static void main(String[] args) {
 		ServerSocket server = null;
 
@@ -13,26 +13,23 @@ class Server {
 			server = new ServerSocket(8000);
 			server.setReuseAddress(true);
 			House house = new House();
-		
 
-			// try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
-			// 	String line;
-			// 	while ((line = br.readLine()) != null) {
-			// 		String username = line;
-			// 		String password = br.readLine();
-			// 		// Do something with the username and password, e.g. print them out
-			// 		System.out.println("Username: " + username);
-			// 		System.out.println("Password: " + password);
-			// 	}
-			// } catch (IOException e) {
-			// 	System.out.println("input output error");
-			// }
-
-			// System.out.println("Print AccountList");
-			// for (int i = 0; i < accountNum; i++) {
-			// 	System.out.print(i + " ");
-			// 	System.out.println(accountList[i].getBalance());
-			// }
+			Account[] accountList = new Account[100];
+			
+			
+			// MADE A READER
+			try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
+				String line;
+				while ((line = br.readLine()) != null) {
+					String username = line;
+					String password = br.readLine();
+					// Do something with the username and password, e.g. print them out
+					System.out.println("Username: " + username);
+					System.out.println("Password: " + password);
+				}
+			} catch (IOException e) {
+				System.out.println("input output error");
+			}
 
 
 			System.out.println("Listening........");
@@ -78,11 +75,6 @@ System.out.println("About to create a thread");
 	private static class ClientHandler implements Runnable {
 		private final Socket clientSocket;
 		private boolean logged = false;
-		int accountListSize;
-		Account[] accountList;
-		int accountNum;
-		int numInAccountList;
-
 		// Constructor
 		public ClientHandler(Socket socket) {
 
@@ -149,6 +141,8 @@ System.out.println("About to create a thread");
 			}
 		}
 
+		
+
 		public void run() {
 
 			try {
@@ -169,6 +163,8 @@ System.out.println("About to create a thread");
 				Account account = new Account(); // change
 				Player player = null;
 				Dealer dealer = null;
+				
+				
 				UserAuthentication userAuthentication = null;
 
 				System.out.println("Server: Entering the loop");
@@ -233,12 +229,15 @@ System.out.println("About to create a thread");
 
 				account = (Account) objectInputStream.readObject();
 				// do stuff
+				objectOutputStream.writeUnshared(account);
 
 				// home page actions play, edit funds, exit
 				// play needs network
 				// edit can be done localy on the clint
 				// exit can send a good by and kill tread
-
+				player = new Player(userAuthentication.getUsername());
+		
+				
 			}
 
 			catch (IOException | ClassNotFoundException e) {

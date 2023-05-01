@@ -8,7 +8,7 @@ public class Account implements Serializable {
     private AccountAction accountAction;
 
     public Account() {
-        this.userIDPassword = new UserAuthentication("", "", UserAuthenticationType.UNDEFINED);
+        this.userIDPassword = new UserAuthentication("Dummy", "", UserAuthenticationType.UNDEFINED);
         this.balance = 0;
         this.accountStatus = AccountStatus.OFFLINE;
     }

@@ -1,4 +1,7 @@
-public class Hand {
+import java.io.Serializable;
+import java.util.function.IntFunction;
+
+public class Hand implements Serializable{
 
 	// attributes
 

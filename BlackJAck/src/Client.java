@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 // Client class
 public class Client {
 
@@ -67,18 +69,27 @@ public class Client {
             System.out.println(account.getAccountAction());
             // Send the account information to the server
             objectOutputStream.writeUnshared(account);
-            // objectOutputStream.flush();
+
+            objectOutputStream.flush();
+            account = (Account) objectInputStream.readObject();
 
             // Listen to the server's response (see if the server has received the account
             // and stored it successfully)
             System.out.println("Entering the account part");
             // TODO: Fix this loop. Log out button is not working.
-            while (account.getAccountStatus() == AccountStatus.ONLINE) {
-                System.out.println("Client: Account status: " + account.getAccountStatus());
+            
+            while (account.getAccountAction() != AccountAction.LOG_OUT) {
+
                 if (account.getAccountAction() == AccountAction.UPDATE_BALANCE) {
-                    clientGUI.accountCommands(account);
+                    account = clientGUI.accountCommands(account);
                 } else if (account.getAccountAction() == AccountAction.PLAY_GAME) {
                     // If the user clicks the play button, break the loop and start the game
+                    break;
+                } else if (account.getAccountAction() == AccountAction.LOG_OUT) {
+                    // If the user clicks the logout button, break the loop and logout
+                    account = clientGUI.accountCommands(account);
+    
+                    //userAuthentication = clientGUI.loginCommands();
                     break;
                 }
                 // else if (account.getAccountAction() == AccountAction.LOG_OUT) {
@@ -93,8 +104,21 @@ public class Client {
                 // objectOutputStream.flush();
             }
 
+            
+
             System.out.println("Listening to the user's actions on the home page...");
-            clientGUI.inGame(player, dealer);
+
+            Table roundTable = new Table();
+            roundTable.addPlayer(player);
+            roundTable.playRound();
+
+            String bet= JOptionPane.showInputDialog(null, "Enter a bet:");
+            roundTable.getPlayer(0).getPlayerHand().setBet(Integer.parseInt(bet));
+
+            while(roundTable.getEOR() != true){
+            clientGUI.inGame(player, roundTable);
+            }
+            account = clientGUI.accountCommands(account);
         }
     }
 }

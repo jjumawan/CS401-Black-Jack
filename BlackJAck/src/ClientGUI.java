@@ -78,6 +78,11 @@ public class ClientGUI implements ClientUI {
             // return currAccount;
             // case 2:
             case 1:
+                currAccount.logOut();
+                loginCommands();
+                System.out.println(" logged");
+                return currAccount;
+            case 2:
                 editFunds();
                 System.out.println("edited funds");
                 currAccount.updateAccountAction(AccountAction.UPDATE_BALANCE);
@@ -119,17 +124,19 @@ public class ClientGUI implements ClientUI {
 
     }
 
-    public Player inGame(Player player, Dealer dealer) {
+    public Table inGame(Player player, Table x) {
         // create two arrays
         Hand playerHand = new Hand();
         Hand dealerHand = new Hand();
 
-        playerHand = player.getPlayerHand();
-        dealerHand = dealer.getHand();
+       
+        playerHand = x.getPlayer(0).getPlayerHand();
+        dealerHand = x.getDealer().getHand();
 
         // create two JList components to display the arrays
-        JList<Card> list1 = new JList<>(playerHand.getCards());
-        JList<Card> list2 = new JList<>(dealerHand.getCards());
+        JList<Card> list2 = new JList<>(playerHand.getCards());
+        JList<Card> list1 = new JList<>(dealerHand.getCards());
+        
 
         // create two JLabel components to hold the names of the arrays
         JLabel label1 = new JLabel("Dealer:");
@@ -162,13 +169,58 @@ public class ClientGUI implements ClientUI {
         // handle the user's choice
         if (choice == 0) {
             System.out.println("User chose Hit");
+            x.getPlayer(0).getPlayerHand().addCardToHand(x.getDeck().drawACard());
+            System.out.println(x.getPlayer(0).getPlayerHand().getValue());
+            if(x.getPlayer(0).getPlayerHand().getValue() == 21 ){
+                JOptionPane.showMessageDialog(null, "BLACK JACK" , "WHHHHHOOOO", choice);
+                JOptionPane.showMessageDialog(null, "You Won!" + Integer.toString( (1/2) * (x.getPlayer(0).getPlayerHand().getBet())), "Dopamine go burrrrr", choice);
+                
+                x.setEOR(DoContinue());
+                return x;
+            }
+            if(x.getPlayer(0).getPlayerHand().getValue() > 21){
+                x.getPlayer(0).setPlayerStatus(PlayerStatus.BUSTED);
+                x.setEOR(true);
+                JOptionPane.showMessageDialog(null, "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction", choice);
+                x.setEOR(DoContinue());
+                return x;
+            }
         } else if (choice == 1) {
             System.out.println("User chose Stand");
+            x.getPlayer(0).setPlayerStatus(PlayerStatus.STANDING);
+
+            x.getDealer().getHand().addCardToHand(x.getDeck().drawACard());
+            System.out.println(x.getDealer().getHand().getValue());
+
+            while(x.getDealer().getHand().getValue() < 16){
+            x.getDealer().addNewCard(x.getDeck().drawACard());
+            }
+
+            if(x.getDealer().getHand().getValue() > x.getPlayer(0).getPlayerHand().getValue()){
+                  JOptionPane.showMessageDialog(null, "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction", choice);
+                x.setEOR(DoContinue());
+                return x;
+            }else if(x.getDealer().getHand().getValue() < x.getPlayer(0).getPlayerHand().getValue()){
+                JOptionPane.showMessageDialog(null, "You Won! $" + Integer.toString( (1/2) * (x.getPlayer(0).getPlayerHand().getBet())), "Dopamine go burrrrr", choice);
+                
+                x.setEOR(DoContinue());
+                return x;
+            }
         } else if (choice == 2) {
             System.out.println("User chose Quit");
+            x.setEOR(true);
         }
 
-        return currPlayer;
+        return x;
+    }
+
+    private boolean DoContinue(){
+        int pick = JOptionPane.showConfirmDialog(null, "Continue?", "To be or not to be?", JOptionPane.YES_NO_OPTION);
+        if (pick == JOptionPane.YES_OPTION) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
