@@ -3,7 +3,7 @@ import java.net.*;
 
 // Server class
 class Server {
-
+	
 	public static void main(String[] args) {
 		ServerSocket server = null;
 
@@ -14,6 +14,8 @@ class Server {
 			server.setReuseAddress(true);
 			House house = new House();
 			Account[] accountList = new Account[100];
+			
+			
 			// MADE A READER
 			try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
 				String line;
@@ -69,11 +71,13 @@ class Server {
 	private static class ClientHandler implements Runnable {
 		private final Socket clientSocket;
 		private boolean logged = false;
-
+	
 		// Constructor
 		public ClientHandler(Socket socket) {
 			this.clientSocket = socket;
 		}
+
+		
 
 		public void run() {
 
@@ -95,6 +99,8 @@ class Server {
 				Account account = new Account(); // change
 				Player player = null;
 				Dealer dealer = null;
+				
+				
 				UserAuthentication userAuthentication = null;
 
 				System.out.println("Server: Entering the loop");
@@ -148,12 +154,15 @@ class Server {
 
 				account = (Account) objectInputStream.readObject();
 				// do stuff
+				objectOutputStream.writeUnshared(account);
 
 				// home page actions play, edit funds, exit
 				// play needs network
 				// edit can be done localy on the clint
 				// exit can send a good by and kill tread
-
+				player = new Player(userAuthentication.getUsername());
+		
+				
 			}
 
 			catch (IOException | ClassNotFoundException e) {

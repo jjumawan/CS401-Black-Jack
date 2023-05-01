@@ -16,11 +16,13 @@ public class Deck {
 		{
 			deckOfCards[i] = new Card();
 			deckOfCards[i].setCard(i);
+			/* 
 			if(i%52 == 0)
 			{
 				System.out.println("--------------------------");	
 			}
 			System.out.println(deckOfCards[i].toString());
+			*/
 		}
 	
 		

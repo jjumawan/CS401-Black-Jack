@@ -4,6 +4,6 @@ public interface ClientUI {
 
     public Account accountCommands(Account account);
 
-    public Player inGame(Player player, Dealer dealer);
+    public Table inGame(Player player, Table table);
 
 }
