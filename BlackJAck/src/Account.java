@@ -99,7 +99,6 @@ public class Account implements Serializable {
         return accountAction;
     }
 
-
     /*
      * public char[] getPassword() {
      * return null;

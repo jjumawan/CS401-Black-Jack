@@ -52,8 +52,8 @@ public class ClientGUI implements ClientUI {
     public Account accountCommands(Account account) {
         currAccount = account;
         String[] commands = { "Start Game",
-                // "Log Out",
-                "Edit Balance" };
+                "Edit Balance",
+                "Log Out" };
 
         // display the balance on the home page
         System.out.println("print the box");
@@ -71,21 +71,15 @@ public class ClientGUI implements ClientUI {
                 currAccount.updateAccountAction(AccountAction.PLAY_GAME);
                 System.out.println("Play game");
                 return currAccount;
-            // case 1:
-            // currAccount.logOut();
-            // currAccount.updateAccountAction(AccountAction.LOG_OUT);
-            // System.out.println(" logged out");
-            // return currAccount;
-            // case 2:
             case 1:
-                currAccount.logOut();
-                loginCommands();
-                System.out.println(" logged");
-                return currAccount;
-            case 2:
                 editFunds();
                 System.out.println("edited funds");
                 currAccount.updateAccountAction(AccountAction.UPDATE_BALANCE);
+                return currAccount;
+            case 2:
+                currAccount.logOut();
+                loginCommands();
+                System.out.println(" logged");
                 return currAccount;
             default: // do nothing
         }
@@ -129,14 +123,12 @@ public class ClientGUI implements ClientUI {
         Hand playerHand = new Hand();
         Hand dealerHand = new Hand();
 
-       
         playerHand = x.getPlayer(0).getPlayerHand();
         dealerHand = x.getDealer().getHand();
 
         // create two JList components to display the arrays
         JList<Card> list2 = new JList<>(playerHand.getCards());
         JList<Card> list1 = new JList<>(dealerHand.getCards());
-        
 
         // create two JLabel components to hold the names of the arrays
         JLabel label1 = new JLabel("Dealer:");
@@ -171,17 +163,21 @@ public class ClientGUI implements ClientUI {
             System.out.println("User chose Hit");
             x.getPlayer(0).getPlayerHand().addCardToHand(x.getDeck().drawACard());
             System.out.println(x.getPlayer(0).getPlayerHand().getValue());
-            if(x.getPlayer(0).getPlayerHand().getValue() == 21 ){
-                JOptionPane.showMessageDialog(null, "BLACK JACK" , "WHHHHHOOOO", choice);
-                JOptionPane.showMessageDialog(null, "You Won!" + Integer.toString( (1/2) * (x.getPlayer(0).getPlayerHand().getBet())), "Dopamine go burrrrr", choice);
-                
+            if (x.getPlayer(0).getPlayerHand().getValue() == 21) {
+                JOptionPane.showMessageDialog(null, "BLACK JACK", "WHHHHHOOOO", choice);
+                JOptionPane.showMessageDialog(null,
+                        "You Won!" + Integer.toString((1 / 2) * (x.getPlayer(0).getPlayerHand().getBet())),
+                        "Dopamine go burrrrr", choice);
+
                 x.setEOR(DoContinue());
                 return x;
             }
-            if(x.getPlayer(0).getPlayerHand().getValue() > 21){
+            if (x.getPlayer(0).getPlayerHand().getValue() > 21) {
                 x.getPlayer(0).setPlayerStatus(PlayerStatus.BUSTED);
                 x.setEOR(true);
-                JOptionPane.showMessageDialog(null, "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction", choice);
+                JOptionPane.showMessageDialog(null,
+                        "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction",
+                        choice);
                 x.setEOR(DoContinue());
                 return x;
             }
@@ -192,17 +188,21 @@ public class ClientGUI implements ClientUI {
             x.getDealer().getHand().addCardToHand(x.getDeck().drawACard());
             System.out.println(x.getDealer().getHand().getValue());
 
-            while(x.getDealer().getHand().getValue() < 16){
-            x.getDealer().addNewCard(x.getDeck().drawACard());
+            while (x.getDealer().getHand().getValue() < 16) {
+                x.getDealer().addNewCard(x.getDeck().drawACard());
             }
 
-            if(x.getDealer().getHand().getValue() > x.getPlayer(0).getPlayerHand().getValue()){
-                  JOptionPane.showMessageDialog(null, "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction", choice);
+            if (x.getDealer().getHand().getValue() > x.getPlayer(0).getPlayerHand().getValue()) {
+                JOptionPane.showMessageDialog(null,
+                        "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction",
+                        choice);
                 x.setEOR(DoContinue());
                 return x;
-            }else if(x.getDealer().getHand().getValue() < x.getPlayer(0).getPlayerHand().getValue()){
-                JOptionPane.showMessageDialog(null, "You Won! $" + Integer.toString( (1/2) * (x.getPlayer(0).getPlayerHand().getBet())), "Dopamine go burrrrr", choice);
-                
+            } else if (x.getDealer().getHand().getValue() < x.getPlayer(0).getPlayerHand().getValue()) {
+                JOptionPane.showMessageDialog(null,
+                        "You Won! $" + Integer.toString((1 / 2) * (x.getPlayer(0).getPlayerHand().getBet())),
+                        "Dopamine go burrrrr", choice);
+
                 x.setEOR(DoContinue());
                 return x;
             }
@@ -214,7 +214,7 @@ public class ClientGUI implements ClientUI {
         return x;
     }
 
-    private boolean DoContinue(){
+    private boolean DoContinue() {
         int pick = JOptionPane.showConfirmDialog(null, "Continue?", "To be or not to be?", JOptionPane.YES_NO_OPTION);
         if (pick == JOptionPane.YES_OPTION) {
             return false;
