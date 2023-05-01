@@ -192,9 +192,10 @@ System.out.println("About to create a thread");
 								objectOutputStream.writeUnshared(userAuthentication);
 								objectOutputStream.flush();
 								// write to account based on accountList
-								objectOutputStream.writeUnshared(account);
+								objectOutputStream.writeUnshared(accountList[numInAccountList]);
 								objectOutputStream.flush();
 								logged = true;
+								break;
 							}
 							numInAccountList++;
 						}
@@ -212,8 +213,63 @@ System.out.println("About to create a thread");
 						// } catch (IOException e) {
 						// 	System.out.println("output to file error");
 						// }
-						userAuthentication.setType(UserAuthenticationType.NAME_TAKEN);
-						objectOutputStream.writeUnshared(userAuthentication);
+
+						System.out.println("SIGNUP");
+				
+						while (numInAccountList < accountNum && !logged) {
+
+							System.out.println(numInAccountList);
+
+							// loop the account array
+							if (accountList[numInAccountList].getUserID().compareTo(userAuthentication.getUsername()) == 0) {
+
+								userAuthentication.setType(UserAuthenticationType.NAME_TAKEN);
+								objectOutputStream.writeUnshared(userAuthentication);
+
+								System.out.println("NAME taken");
+
+								break;
+
+							}
+
+							System.out.println("while loop " + numInAccountList);
+
+							numInAccountList++;
+						}
+
+						System.out.println("out of while loop");
+
+						if (numInAccountList < accountListSize - 1 && !logged) {
+
+							System.out.println("create new account");
+
+							// account = accountlist[i];
+							userAuthentication.setType(UserAuthenticationType.LOGGED_IN);
+
+							objectOutputStream.writeUnshared(userAuthentication);
+							objectOutputStream.flush();
+							// write to account based on accountList
+
+							Account newAccount = new Account(userAuthentication, 0, AccountStatus.ONLINE);
+
+							System.out.println(userAuthentication.getUsername());
+		
+							++accountNum;
+							accountList[numInAccountList++] = newAccount;
+							
+							System.out.println("accountList[accountNum Balance] " + accountList[accountNum-1].getBalance());
+
+							objectOutputStream.writeUnshared(accountList[numInAccountList-1]);
+							objectOutputStream.flush();
+							logged = true;
+						}
+
+
+						System.out.println("after if state to create new account");
+
+						break;
+
+
 					}
 					else {
 						// returns it as undefine
