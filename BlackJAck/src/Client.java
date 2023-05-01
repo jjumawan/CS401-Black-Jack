@@ -77,7 +77,7 @@ public class Client {
             // and stored it successfully)
             System.out.println("Entering the account part");
             // TODO: Fix this loop. Log out button is not working.
-            
+
             while (account.getAccountAction() != AccountAction.LOG_OUT) {
 
                 if (account.getAccountAction() == AccountAction.UPDATE_BALANCE) {
@@ -88,8 +88,8 @@ public class Client {
                 } else if (account.getAccountAction() == AccountAction.LOG_OUT) {
                     // If the user clicks the logout button, break the loop and logout
                     account = clientGUI.accountCommands(account);
-    
-                    //userAuthentication = clientGUI.loginCommands();
+
+                    // userAuthentication = clientGUI.loginCommands();
                     break;
                 }
                 // else if (account.getAccountAction() == AccountAction.LOG_OUT) {
@@ -104,19 +104,17 @@ public class Client {
                 // objectOutputStream.flush();
             }
 
-            
-
             System.out.println("Listening to the user's actions on the home page...");
 
             Table roundTable = new Table();
             roundTable.addPlayer(player);
             roundTable.playRound();
 
-            String bet= JOptionPane.showInputDialog(null, "Enter a bet:");
+            String bet = JOptionPane.showInputDialog(null, "Enter a bet:");
             roundTable.getPlayer(0).getPlayerHand().setBet(Integer.parseInt(bet));
 
-            while(roundTable.getEOR() != true){
-            clientGUI.inGame(player, roundTable);
+            while (roundTable.getEOR() != true) {
+                clientGUI.inGame(player, roundTable);
             }
             account = clientGUI.accountCommands(account);
         }
