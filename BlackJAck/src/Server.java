@@ -13,20 +13,27 @@ class Server {
 			server = new ServerSocket(8000);
 			server.setReuseAddress(true);
 			House house = new House();
-			Account[] accountList = new Account[100];
-			// MADE A READER
-			try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
-				String line;
-				while ((line = br.readLine()) != null) {
-					String username = line;
-					String password = br.readLine();
-					// Do something with the username and password, e.g. print them out
-					System.out.println("Username: " + username);
-					System.out.println("Password: " + password);
-				}
-			} catch (IOException e) {
-				System.out.println("input output error");
-			}
+		
+
+			// try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
+			// 	String line;
+			// 	while ((line = br.readLine()) != null) {
+			// 		String username = line;
+			// 		String password = br.readLine();
+			// 		// Do something with the username and password, e.g. print them out
+			// 		System.out.println("Username: " + username);
+			// 		System.out.println("Password: " + password);
+			// 	}
+			// } catch (IOException e) {
+			// 	System.out.println("input output error");
+			// }
+
+			// System.out.println("Print AccountList");
+			// for (int i = 0; i < accountNum; i++) {
+			// 	System.out.print(i + " ");
+			// 	System.out.println(accountList[i].getBalance());
+			// }
+
 
 			System.out.println("Listening........");
 
@@ -46,6 +53,8 @@ class Server {
 
 				// create a new thread object
 				ClientHandler clientSock = new ClientHandler(client);
+
+System.out.println("About to create a thread");
 
 				// This thread will handle the client
 				// separately
@@ -69,10 +78,75 @@ class Server {
 	private static class ClientHandler implements Runnable {
 		private final Socket clientSocket;
 		private boolean logged = false;
+		int accountListSize;
+		Account[] accountList;
+		int accountNum;
+		int numInAccountList;
 
 		// Constructor
 		public ClientHandler(Socket socket) {
+
+			System.out.println("ClientHandler constructor");
+
 			this.clientSocket = socket;
+
+			accountListSize = 100; // accountList length/size
+			accountList = new Account[accountListSize];
+			accountNum = 0; // number of accounts in acount list
+			numInAccountList = 0; // this thread/account's index in 
+
+			// this.accountNum = accountNum;
+			// for (int i = 0; i < accountNum; i++) {
+			// 	this.accountList[i] = accountList[i];
+			// }
+			// numInAccountList = 0;
+
+						// MADE A READER
+			
+			// read the content
+			try (BufferedReader br = new BufferedReader(new FileReader("Playerlist.txt"))) {
+				String line = br.readLine();
+
+				while (line != null) {
+
+					
+					
+					// file line is read as
+					// userID:userPassword, balance, accountStatus
+					String[] accountDetails = line.split(",");
+					String[] userDetails = accountDetails[0].split(":");
+
+					UserAuthentication tempUser = new UserAuthentication(userDetails[0], userDetails[1], UserAuthenticationType.UNDEFINED);
+					
+					System.out.println(userDetails[0]);
+					System.out.println(userDetails[1]);
+
+					Account newAccount = new Account(tempUser, Integer.parseInt(accountDetails[1]), AccountStatus.OFFLINE);
+
+					System.out.println(accountDetails[1]);
+
+					accountList[accountNum] = newAccount;
+					
+					System.out.println("accountList[accountNum Balance " + accountList[accountNum].getBalance());
+
+					accountNum++;
+
+					
+
+					// breaks out of while loop if accountNum is 100, or reached accountList size
+					if (accountNum <= accountListSize) break;
+
+					line = br.readLine();
+					
+				}
+				
+			} catch (FileNotFoundException e) {
+				System.out.println("file not found");
+				// Exception handling
+			} catch (IOException e) {
+				System.out.println("input output error");
+				// Exception handling
+			}
 		}
 
 		public void run() {
@@ -106,35 +180,46 @@ class Server {
 					if (userAuthentication.getType() == UserAuthenticationType.LOGIN_REQUEST) {
 						// TODO: Loop through the account list and check if the username and password
 						// already exist
-						// loop the account array
-						if (userAuthentication.authenticate(userAuthentication)) {
+						System.out.println("LOGIN_REQ");
+						System.out.println(numInAccountList);
+						System.out.println(accountNum);
+						while (numInAccountList < accountNum && !logged) {
 
-							// account = accountlist[i];
-							userAuthentication.setType(UserAuthenticationType.LOGGED_IN);
-							objectOutputStream.writeUnshared(userAuthentication);
-							objectOutputStream.flush();
-							// write to account based on accountList
-							objectOutputStream.writeUnshared(account);
-							objectOutputStream.flush();
-							logged = true;
-							break;
+							System.out.println(numInAccountList);
+
+							// loop the account array
+							if (userAuthentication.authenticate(accountList[numInAccountList].getUser())) {
+
+								// account = accountlist[i];
+								userAuthentication.setType(UserAuthenticationType.LOGGED_IN);
+
+								objectOutputStream.writeUnshared(userAuthentication);
+								objectOutputStream.flush();
+								// write to account based on accountList
+								objectOutputStream.writeUnshared(account);
+								objectOutputStream.flush();
+								logged = true;
+							}
+							numInAccountList++;
 						}
+						break;
 
 					} else if (userAuthentication.getType() == UserAuthenticationType.SIGNUP) {
 						// check it to a list with a for loop
 						// if it's uA == um form list
-						try {
-							FileOutputStream fos = new FileOutputStream("Playerlist.txt", true);
-							String data = userAuthentication.getUsername() + "," + userAuthentication.getPassword()
-									+ "\n";
-							fos.write(data.getBytes());
-							fos.close();
-						} catch (IOException e) {
-							System.out.println("output to file error");
-						}
+						// try {
+						// 	FileOutputStream fos = new FileOutputStream("Playerlist.txt", true);
+						// 	String data = userAuthentication.getUsername() + "," + userAuthentication.getPassword()
+						// 			+ "\n";
+						// 	fos.write(data.getBytes());
+						// 	fos.close();
+						// } catch (IOException e) {
+						// 	System.out.println("output to file error");
+						// }
 						userAuthentication.setType(UserAuthenticationType.NAME_TAKEN);
 						objectOutputStream.writeUnshared(userAuthentication);
-					} else {
+					}
+					else {
 						// returns it as undefine
 						objectOutputStream.writeUnshared(userAuthentication);
 					}

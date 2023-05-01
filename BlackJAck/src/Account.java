@@ -13,6 +13,12 @@ public class Account implements Serializable {
         this.accountStatus = AccountStatus.OFFLINE;
     }
 
+    public Account(UserAuthentication newUser, int newBalance, AccountStatus newAcctStatus) {
+        this.userIDPassword = newUser;
+        this.balance = newBalance;
+        this.accountStatus = newAcctStatus;
+    }
+
     public boolean login(UserAuthentication user) {
         if (user.getUsername().equals(this.userIDPassword.getUsername())
                 && user.getPassword().equals(this.userIDPassword.getPassword())) {
@@ -40,12 +46,20 @@ public class Account implements Serializable {
         return this.userIDPassword;
     }
 
+    public void setUser(UserAuthentication loginCommands) {
+        this.userIDPassword = loginCommands;
+    }
+
     public String getUserID() {
         return this.userIDPassword.getUsername();
     }
 
     public int getBalance() {
         return this.balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public void addBalance(int amount) {
@@ -81,9 +95,7 @@ public class Account implements Serializable {
         return accountAction;
     }
 
-    public void setUser(UserAuthentication loginCommands) {
-        this.userIDPassword = loginCommands;
-    }
+
     /*
      * public char[] getPassword() {
      * return null;
