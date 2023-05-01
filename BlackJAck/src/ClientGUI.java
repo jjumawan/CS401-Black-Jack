@@ -15,7 +15,7 @@ public class ClientGUI implements ClientUI {
         int choice;
         do {
             choice = JOptionPane.showOptionDialog(null,
-                    "Welcome to Group 2's BlackJack! \n Pick an option", "Portal page",
+                    "Welcome to BlackJack by Group 2! \nPick an option", "Portal page",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -59,7 +59,7 @@ public class ClientGUI implements ClientUI {
         // display the balance on the home page
         System.out.println("print the box");
         int choice = JOptionPane.showOptionDialog(null,
-                "ID: " + currAccount.getUserID() + " \n Balance: " + currAccount.getBalance() + "\nSelect a command",
+                "ID: " + currAccount.getUserID() + " \nBalance: " + currAccount.getBalance() + "\nSelect a command",
                 "Home Page",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -69,9 +69,18 @@ public class ClientGUI implements ClientUI {
 
         switch (choice) {
             case 0:
-                currAccount.updateAccountAction(AccountAction.PLAY_GAME);
-                System.out.println("Play game");
-                return currAccount;
+                // If the player's balance is 0, prompt the edit balance window
+                if (currAccount.getBalance() == 0) {
+                    JOptionPane.showMessageDialog(null, "You have no funds. Please add funds before playing the game!");
+                    editFunds();
+                    currAccount.updateAccountAction(AccountAction.UPDATE_BALANCE);
+                    return currAccount;
+                } else {
+                    currAccount.updateAccountAction(AccountAction.PLAY_GAME);
+                    System.out.println("Play game");
+                    return currAccount;
+                }
+
             case 1:
                 editFunds();
                 System.out.println("edited funds");
@@ -131,6 +140,10 @@ public class ClientGUI implements ClientUI {
         JList<Card> list2 = new JList<>(playerHand.getCards());
         JList<Card> list1 = new JList<>(dealerHand.getCards());
 
+        // Label to display player's balance and bet
+        JLabel label0 = new JLabel("Your balance: " + currAccount.getBalance());
+        JLabel label3 = new JLabel("Your bet: " + player.getPlayerHand().getBet());
+
         // create two JLabel components to hold the names of the arrays
         JLabel label1 = new JLabel("Dealer:");
         JLabel label2 = new JLabel(player.getUserID());
@@ -138,6 +151,10 @@ public class ClientGUI implements ClientUI {
         // create a JPanel to hold the JList components and labels
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
+        // Display player's balance
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(label0, c);
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(5, 5, 5, 5);
@@ -151,6 +168,9 @@ public class ClientGUI implements ClientUI {
         c.gridx = 1;
         c.gridy = 1;
         panel.add(new JScrollPane(list2), c);
+        c.gridx = 0;
+        c.gridy = 3;
+        panel.add(label3, c);
 
         // add three buttons to the dialog
         Object[] options = { "Hit", "Stand", "Quit" };
@@ -175,8 +195,7 @@ public class ClientGUI implements ClientUI {
             }
             if (x.getPlayer(0).getPlayerHand().getValue() > 21) {
                 x.getPlayer(0).setPlayerStatus(PlayerStatus.BUSTED);
-                // update player's balance
-                
+                // update player's balann
                 x.setEOR(true);
                 JOptionPane.showMessageDialog(null,
                         "You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()), "Gambling Addiction",
@@ -197,9 +216,9 @@ public class ClientGUI implements ClientUI {
 
             if (x.getDealer().getHand().getValue() > x.getPlayer(0).getPlayerHand().getValue()) {
                 JOptionPane.showMessageDialog(null,
-                        "Dealer 
-
-                        
+                        "Dealer Won! You lost $" + Integer.toString(x.getPlayer(0).getPlayerHand().getBet()),
+                        "Gambling Addiction",
+                        choice);
 
                 x.setEOR(DoContinue());
                 return x;

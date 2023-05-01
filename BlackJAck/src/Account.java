@@ -8,7 +8,7 @@ public class Account implements Serializable {
     private AccountAction accountAction;
 
     public Account() {
-        this.userIDPassword = new UserAuthentication("Dummy", "", UserAuthenticationType.UNDEFINED);
+        this.userIDPassword = new UserAuthentication("", "", UserAuthenticationType.UNDEFINED);
         this.balance = 0;
         this.accountStatus = AccountStatus.OFFLINE;
     }
@@ -70,9 +70,12 @@ public class Account implements Serializable {
     public void withdrawBalance(int amount) {
         if (amount > this.balance) {
             System.out.println("Insufficient funds.");
+            JOptionPane.showMessageDialog(null, "Insufficient funds.");
         } else {
             this.balance -= amount;
             System.out.println(amount + " withdrawn from balance. New balance: " + this.balance);
+            JOptionPane.showMessageDialog(null,
+                    "Withdrawn " + amount + " from balance. \n\nNew balance: " + this.balance);
         }
     }
 

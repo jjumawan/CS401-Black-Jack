@@ -162,7 +162,14 @@ class Server {
 
 			catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
-			} finally {
+			}
+			// Close the connection
+			finally {
+				try {
+					clientSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
