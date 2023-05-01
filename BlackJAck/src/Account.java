@@ -62,6 +62,10 @@ public class Account implements Serializable {
         }
     }
 
+    public void setAccountStatus(AccountStatus newAccountStatus) {
+        this.accountStatus = newAccountStatus;
+    }
+
     public void updateAccountStatus() {
         if (this.balance < 0) {
             this.accountStatus = AccountStatus.OFFLINE;

@@ -52,7 +52,7 @@ public class ClientGUI implements ClientUI {
     public Account accountCommands(Account account) {
         currAccount = account;
         String[] commands = { "Start Game",
-                "Log Out",
+                // "Log Out",
                 "Edit Balance" };
 
         // display the balance on the home page
@@ -71,11 +71,13 @@ public class ClientGUI implements ClientUI {
                 currAccount.updateAccountAction(AccountAction.PLAY_GAME);
                 System.out.println("Play game");
                 return currAccount;
+            // case 1:
+            // currAccount.logOut();
+            // currAccount.updateAccountAction(AccountAction.LOG_OUT);
+            // System.out.println(" logged out");
+            // return currAccount;
+            // case 2:
             case 1:
-                currAccount.logOut();
-                System.out.println(" logged");
-                return currAccount;
-            case 2:
                 editFunds();
                 System.out.println("edited funds");
                 currAccount.updateAccountAction(AccountAction.UPDATE_BALANCE);
