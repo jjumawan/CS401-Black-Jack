@@ -1,3 +1,4 @@
+package BlackJack;
 
 public class Table {
 	private Deck playingDeck;

@@ -1,3 +1,4 @@
+package BlackJack;
 public enum PlayerStatus {
     // when a player first joins the game, they are deciding (making a bet);
     // also, when they are making decisions they are deciding.

@@ -1,3 +1,4 @@
+package BlackJack;
 import java.io.Serializable;
 
 public class Dealer implements Serializable {

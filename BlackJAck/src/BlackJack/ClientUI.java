@@ -1,3 +1,4 @@
+package BlackJack;
 public interface ClientUI {
 
     public UserAuthentication loginCommands();

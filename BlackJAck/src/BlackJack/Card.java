@@ -1,3 +1,4 @@
+package BlackJack;
 
 public class Card {
 	private int rank;

@@ -1,3 +1,4 @@
+package BlackJack;
 
 public enum Suit {
 	DIAMONDS, 

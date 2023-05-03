@@ -1,3 +1,4 @@
+package BlackJack;
 
 public class AccountPage {
     private UserAuthentication currentUser;
