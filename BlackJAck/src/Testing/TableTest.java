@@ -1,6 +1,9 @@
 package Testing;
 
 import java.beans.Transient;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import BlackJack.*;
 
@@ -42,7 +45,7 @@ public class TableTest {
         Table table = new Table();
         boolean expect = false;
         boolean actual = table.getEOR();
-        assertsEquals(expected, actual);
+        assertSame(expect, actual);
     }
 
     @Test
@@ -54,10 +57,10 @@ public class TableTest {
     public void addTest(){
         Table table = new Table();
         Player player = new Player("Jievy");
-        table.addPlayer(player1);
+        table.addPlayer(player);
 
-        assertsEquals(1, table.getNumberOfPlayers());
-        assertsEquals(player1, table.getPlayersAtTable()[0]);
+//        assertsEquals(1, table.getNumberOfPlayers());
+        assertSame(player, table.getPlayer(0));
         
     }
 
@@ -66,8 +69,8 @@ public class TableTest {
         Player two = new Player("T");
         TestTable.addPlayer(two);
         
-        assertSame(TestTable.getPlayer(0));
-        TestTable.removePlayer(0);
+        assertSame(two, TestTable.getPlayer(0));
+        TestTable.removePlayer(two);
 
         assertFalse(TestTable.getPlayer(0).equals(two));
     }

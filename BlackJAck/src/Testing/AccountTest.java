@@ -1,11 +1,11 @@
-Package Testing;
+package Testing;
 import BlackJack.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AccountTest {
     @Test
-    public void testLogin {
+    public void testLogin() {
         // Create a new account with a known username and password
         UserAuthentication user = new UserAuthentication("testuser", "testpassword", UserAuthenticationType.UNDEFINED);
         Account account = new Account(user, 100, AccountStatus.OFFLINE);

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 public class TestsCard {
 	
+	// Parsa's code
+	
     @Test
     public void testGettersAndSetters() {
         Card card = new Card();
